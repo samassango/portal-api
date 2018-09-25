@@ -4,12 +4,6 @@ var config = db.connectConfig();
 const uuidv1 = require('uuid/v1');
 var pool = new pg.Pool(config);
 
-module.exports.auth = {
-  authenticate: function (req, res) {
-
-  }
-}
-
 module.exports.users = {
   getUsers: function (req, res) {
     //do something
@@ -216,20 +210,5 @@ module.exports.careers = {
       });
 
     });
-  }
-}
-
-module.exports.docs = {
-  getDoc: (req, res) => {
-
-  },
-  postDocs: (req, res) => {
-
-  },
-  getDocs: (req, res) => {
-
-  },
-  delDoc: (req, res) => {
-
   }
 }

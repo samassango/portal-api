@@ -1,6 +1,7 @@
 var express = require('express');
 var { users, careers } = require('../controller/portalController');
-
+var { docs } = require('../controller/documentController');
+var { auth } = require('../controller/authController');
 var router = express.Router();
 
 router.route('/api/v1/users/:userid').get(users.getUser);
