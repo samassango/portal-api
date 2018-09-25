@@ -2,7 +2,8 @@
 var express = require('express');
 var pg = require("pg");
 var app = express();
-const uuidv1 = require('uuid/v1');
+const bodyParser = require("body-parser");
+//const uuidv1 = require('uuid/v1');
 var db = require('./config/db');
 var routes = require('./routes/routes');
 
@@ -11,6 +12,8 @@ var config = db.connectConfig();
 var pool = new pg.Pool(config);
 
 db.initiateDB(pool);
+
+app.use(bodyParser.json());
 
 app.use('/', routes);
 

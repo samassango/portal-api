@@ -4,6 +4,7 @@
   "description": "Career job seaching portal",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js --watcher",
     "test": "test.js"
   },
   "repository": {
@@ -22,6 +23,7 @@
   },
   "homepage": "https://github.com/samassango/portal-api#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "pg": "^7.4.3",
     "uuid": "^3.3.2"

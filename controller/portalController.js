@@ -1,8 +1,8 @@
 var pg = require("pg");
-var pool = new pg.Pool(config);
-var db = require('./config/db');
+var db = require('../config/db');
 var config = db.connectConfig();
 const uuidv1 = require('uuid/v1');
+var pool = new pg.Pool(config);
 
 module.exports.auth = {
   authenticate: function (req, res) {
@@ -64,6 +64,7 @@ module.exports.users = {
       lastname: req.body.lastname,
       email: req.body.email, complete: false
     };
+    console.log('data', data);
     // Get a Postgres client from the connection pool
     pool.connect((err, client, done) => {
       // Handle connection errors
@@ -73,19 +74,18 @@ module.exports.users = {
         return res.status(500).json({ success: false, data: err });
       }
       // SQL Query > Insert Data
-      client.query('INSERT INTO users(id, firstname, lastname, email, complete) values($0, $1, $2, $3, $4)',
-        [uuidv1(), data.firstname, data.lastname, data.email, data.complete]);
-      // SQL Query > Select Data
-      const query = client.query('SELECT * FROM users ORDER BY id ASC');
-      // Stream results back one row at a time
-      query.on('row', (row) => {
-        results.push(row);
-      });
-      // After all data is returned, close connection and return results
-      query.on('end', () => {
-        done();
-        return res.json(results);
-      });
+      client.query('INSERT INTO users(id, firstname, lastname, email, complete) values($1, $2, $3, $4, $5)',
+        [uuidv1(), data.firstname, data.lastname, data.email, data.complete],
+        function (err, result) {
+          if (err) {
+            console.log(err);
+            res.status(400).send(err);
+          } else {
+            res.status(200).send(result);
+            console.log('row inserted with id: ' + result);
+          }
+          client.end();
+        });
     });
   },
   delUser: function (req, res) {
@@ -180,16 +180,14 @@ module.exports.careers = {
       }
       // SQL Query > Insert Data
       client.query('INSERT INTO careers(id, careertitle, careername, careerStartDate, careerEndDate, careerDescription, complete) values($1, $2, $3, $4, $5, $6)',
-        [uuidv1(), data.careertitle, data.careername, Date.now(), data.careerEndDate, data.careerDescription, data.complete]);
-      // SQL Query > Select Data
-      client.query('SELECT * FROM items ORDER BY id ASC', function (err, result) {
-        done(); // closing the connection;
-        if (err) {
-          console.log(err);
-          res.status(400).send(err);
-        }
-        res.status(200).send(result.rows);
-      });
+        [uuidv1(), data.careertitle, data.careername, Date.now(), data.careerEndDate, data.careerDescription, data.complete], function (err, result) {
+          done(); // closing the connection;
+          if (err) {
+            console.log(err);
+            res.status(400).send(err);
+          }
+          res.status(200).send(result.rows);
+        });
 
     });
   },
@@ -208,7 +206,7 @@ module.exports.careers = {
       // SQL Query > Delete Data
       client.query('DELETE FROM careers WHERE id=($1)', [id]);
       // SQL Query > Select Data
-      var query = client.query('SELECT * FROM careers ORDER BY id ASC', function (err, result) {
+      client.query('SELECT * FROM careers ORDER BY id ASC', function (err, result) {
         done(); // closing the connection;
         if (err) {
           console.log(err);
@@ -218,5 +216,20 @@ module.exports.careers = {
       });
 
     });
+  }
+}
+
+module.exports.docs = {
+  getDoc: (req, res) => {
+
+  },
+  postDocs: (req, res) => {
+
+  },
+  getDocs: (req, res) => {
+
+  },
+  delDoc: (req, res) => {
+
   }
 }
