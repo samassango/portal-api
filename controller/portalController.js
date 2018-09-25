@@ -54,8 +54,11 @@ module.exports.users = {
     const results = [];
     // Grab data from http request
     const data = {
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
+      fulnames: req.body.fulnames,
+      address: req.body.address,
+      category: req.body.category,
+      onofexperience: req.body.onofexperience,
+      password: req.body.password,
       email: req.body.email, complete: false
     };
     console.log('data', data);
@@ -68,8 +71,8 @@ module.exports.users = {
         return res.status(500).json({ success: false, data: err });
       }
       // SQL Query > Insert Data
-      client.query('INSERT INTO users(id, firstname, lastname, email, complete) values($1, $2, $3, $4, $5)',
-        [uuidv1(), data.firstname, data.lastname, data.email, data.complete],
+      client.query('INSERT INTO users(id, fulnames, address, category, onofexperience, password, email, complete) values($1, $2, $3, $4, $5, $6, $7, $8)',
+        [uuidv1(), data.fulnames, data.address, data.category, data.onofexperience, data.password, data.email, data.complete],
         function (err, result) {
           if (err) {
             console.log(err);

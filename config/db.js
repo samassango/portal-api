@@ -12,7 +12,7 @@ module.exports.initiateDB = (pool) => {
     client.query(
       'CREATE TABLE IF NOT EXISTS userscareers(id VARCHAR(100) PRIMARY KEY, careerid VARCHAR(100) not null, userId VARCHAR(100) not null, createdDate VARCHAR(100) not null, complete BOOLEAN)');
     client.query(
-      'CREATE TABLE IF NOT EXISTS documents (id VARCHAR(100) PRIMARY KEY, documentname VARCHAR(100) not null, userId VARCHAR(100) not null, createdDate VARCHAR(100) not null, complete BOOLEAN)'); Documents
+      'CREATE TABLE IF NOT EXISTS documents (id VARCHAR(100) PRIMARY KEY, documentname VARCHAR(100) not null, userId VARCHAR(100) not null, createdDate VARCHAR(100) not null, complete BOOLEAN)');
     done();
   })
 }
